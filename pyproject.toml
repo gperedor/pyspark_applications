@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyspark_applications"
+version = "0.0.1"
+authors = [
+  { name="Gabriel Peredo", email="gabriel.peredo@gmail.com" },
+]
+
+[tool.isort]
+profile = "black"
