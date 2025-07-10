@@ -13,4 +13,9 @@ authors = [
 profile = "black"
 
 [tool.setuptools]
-packages = ["pyspark_applications", "pyspark_applications.etl", "pyspark_applications.etl.hps_goldilocks"]
+packages = [
+    "pyspark_applications",
+    "pyspark_applications.etl",
+    "pyspark_applications.etl.hps_goldilocks",
+    "pyspark_applications.etl.word_count",
+]

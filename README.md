@@ -34,6 +34,8 @@ The following pipelines are included:
 
 1. pyspark_applications.etl.hps_goldilocks: an implementation of the column-based
 partitioning solution for the High Performance Spark goldilocks problem
+2. pyspark_applications.etl.word_count: a simple top-n most frequent word
+counting program, with both an RDD and a DataFrame backend
 
 ### HELP
 
