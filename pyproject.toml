@@ -11,3 +11,6 @@ authors = [
 
 [tool.isort]
 profile = "black"
+
+[tool.setuptools]
+packages = ["pyspark_applications", "pyspark_applications.etl", "pyspark_applications.etl.hps_goldilocks"]
