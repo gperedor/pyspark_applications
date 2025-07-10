@@ -16,6 +16,7 @@ profile = "black"
 packages = [
     "pyspark_applications",
     "pyspark_applications.etl",
+    "pyspark_applications.etl.crm_analytics",
     "pyspark_applications.etl.hps_goldilocks",
     "pyspark_applications.etl.word_count",
 ]
