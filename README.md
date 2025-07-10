@@ -36,6 +36,8 @@ The following pipelines are included:
 partitioning solution for the High Performance Spark goldilocks problem
 2. pyspark_applications.etl.word_count: a simple top-n most frequent word
 counting program, with both an RDD and a DataFrame backend
+3. pyspark_applications.etl.crm_analytics: computes monthly growth of sales
+by regional offices off the Kaggle `crm-sales-opportunities` dataset
 
 ### HELP
 
