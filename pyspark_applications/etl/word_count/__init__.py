@@ -2,14 +2,25 @@ import re
 
 import pyspark.sql.functions as _f
 
+# Unicode ranges proved hard to work with in regex fed to Spark
+## We are intending to tokenize a Wikipedia article, those include
+## IPA pronunciation guides as a general rule, and this is a reasonable
+## effort to implement a tokenizer in a few lines for non-ASCII input
+IPA_UNICODE_BLOC = "ɐɑɒɓɔɕɖɗɘəɚɛɜɝɞɟɠɡɢɣɤɥɦɧɨɩɪɫɬɭɮɯɰɱɲɳɴɵɶɷɸɹɺɻɼɽɾɿʀʁʂʃʄʅʆʇʈʉʊʋʌʍʎʏʐʑʒʓʔʕʖʗʘʙʚʛʜʝʞʟʠʡʢʣʤʥʦʧʨʩʪʫʬʭʮʯ"
+
 
 class WordCountPipelineDF:
     "A DataFrame-based implementation of a simple most-frequent-words program"
 
+    TOKENIZER_PATTERN = f"[^a-zA-Z0-9{IPA_UNICODE_BLOC}]"
+
     def __init__(self, spark, resource_path):
 
         df = spark.read.text(resource_path)
-        df = df.withColumn("word_array", _f.split(_f.col("value"), "[ ,\\.;]"))
+        df = df.withColumn(
+            "word_array",
+            _f.split(_f.col("value"), WordCountPipelineDF.TOKENIZER_PATTERN),
+        )
         df = df.withColumn("word", _f.explode("word_array"))
         df = df.where(_f.col("word") != "").select("word")
 
@@ -34,13 +45,15 @@ class WordCountPipelineRDD:
     that is way overkill for this example
     """
 
+    TOKENIZER_PATTERN = f"[^a-zA-Z0-9{IPA_UNICODE_BLOC}]"
+
     def __init__(self, spark, resource_path):
         sc = spark.sparkContext
 
         text_rdd = sc.textFile(resource_path)
-        self.words_rdd = text_rdd.flatMap(lambda r: re.split("[, \\.\r\n]", r)).filter(
-            lambda r: r != ""
-        )
+        self.words_rdd = text_rdd.flatMap(
+            lambda r: re.split(WordCountPipelineRDD.TOKENIZER_PATTERN, r)
+        ).filter(lambda r: r != "")
 
     def top_most_frequent_words(self, n):
         # This could have been a .countByValue
